@@ -6,12 +6,15 @@ app.use(morgan('dev'));
 app.get('/', (req, res) => {
   res.send('Hello Express!');
 });
+
 app.listen(8000, () => {
   console.log('Express server is listening on port 8000!');
 });
+
 app.get('/burgers', (req, res) => {
   res.send('We have juicy cheese burgers!');
 });
+
 app.get('/echo', (req, res) => {
   const responseText = `Here are some details of your request:
       Base URL: ${req.baseUrl}
@@ -28,9 +31,9 @@ app.get('/sum', (req, res) => {
   if (!a || !b) {
     return res
       .status(400)
-      .send('Please provide an initial integer: ? a=x & b=x');
+      .send('Please provide the following query string: ? a=x & b=x');
   }
-  const added = `The sum of ${a} & ${b} is ${c}`;
+  const added = 'The sum of ${a} & ${b} is ${c}';
   res.send(added);
 });
 
@@ -50,17 +53,29 @@ app.get('/cipher', (req, res) => {
 });
 
 app.get('/lotto', (req, res) => {
-  const shift = parseInt(req.query.shift);
-  const text = req.query.text
-    .split('')
-    .map((items) => {
-      return String.fromCharCode(items.charCodeAt(0) + shift);
-    })
-    .join('');
-  if (!text || !shift) {
-    return res
-      .status(400)
-      .send('Please provide the following query string: ? text=x & shift=x');
+  let input = req.query.arr;
+  let winningNumbers = Array.from({ length: 6 }, () =>
+    Math.floor(Math.random() * 20 + 1),
+  );
+  let matching = 0;
+  for (let i = 0; i < input.length; i++) {
+    if (input.includes(winningNumbers[i])) {
+      matching++;
+    }
   }
-  res.send(result);
+  switch (matching) {
+    case 6:
+      res
+        .status(200)
+        .send('Wow! Unbelievable! You could have won the mega millions!');
+      break;
+    case 5:
+      res.status(200).send('Congratulations! You win $100!');
+      break;
+    case 4:
+      res.status(200).send('Congratulations, you win a free ticket!');
+      break;
+    default:
+      res.status(200).send('Sorry, you lose.');
+  }
 });
