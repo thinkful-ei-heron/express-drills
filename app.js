@@ -44,7 +44,7 @@ app.get('/cipher', (req, res) => {
   if (!text || !shift) {
     return res
       .status(400)
-      .send('Please provide a text & shift parameter: ? text=x & shift=x');
+      .send('Please provide the following query string: ? text=x & shift=x');
   }
   res.send(result);
 });
@@ -60,7 +60,7 @@ app.get('/lotto', (req, res) => {
   if (!text || !shift) {
     return res
       .status(400)
-      .send('Please provide a text & shift parameter: ? text=x & shift=x');
+      .send('Please provide the following query string: ? text=x & shift=x');
   }
   res.send(result);
 });
